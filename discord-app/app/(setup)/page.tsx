@@ -3,7 +3,8 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 const SetupPage = async () => {
-  const profile = await initProfile();
+  // TODO update types after
+  const profile = (await initProfile()) as any;
 
   const server = await db.server.findFirst({
     where: {
