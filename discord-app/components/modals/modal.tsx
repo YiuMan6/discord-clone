@@ -3,6 +3,7 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import FileUploader from "@/components/uploader/FileUploader";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -35,6 +37,7 @@ const formSchema = z.object({
 
 const Modal = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
@@ -51,7 +54,15 @@ const Modal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      // the path matches the file path
+      const req = await axios.post("/api/servers", values);
+      console.log(req);
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    } catch (err) {}
+    // console.log(values);
   };
 
   if (!isMounted) {

@@ -21,6 +21,7 @@ const SetupPage = async () => {
     return redirect(`/server/${server.id}`);
   }
 
+  // if current user no server, go to create on
   return <Modal />;
 };
 
